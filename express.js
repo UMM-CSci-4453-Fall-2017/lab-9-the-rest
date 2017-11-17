@@ -9,6 +9,7 @@ var express=require('express'),
 credentials.host='ids.morris.umn.edu'; //setup database credentials
 
 var buttons;
+var users;
 var current_transactions;
 var connection = mysql.createConnection(credentials); // setup the connection
 sql = "select * from institutional_casey.till_buttons;"
@@ -32,7 +33,7 @@ app.get("/click",function(req,res){
 	fixed_index_id = id-1;
 	var label = buttons[fixed_index_id].label;
 	var item_price = prices[fixed_index_id].price;
-	var sql = 'insert into institutional_casey.current_transaction (label,price,Amount,buttonID) values ("' + label +'",' + item_price +  ',1,' + id +') on duplicate key update Amount = Amount+1;';
+	var sql = 'insert into institutional_casey.current_transaction (label,price,Amount,buttonID,timeStamp) values ("' + label +'",' + item_price +  ',1,' + id +',now()) on duplicate key update Amount = Amount+1;';
 
 	console.log("Attempting sql ->"+sql+"<-");
 
@@ -64,6 +65,16 @@ app.get("/trans",function(req,res){
 	}})(res));
 
 });
+
+app.get("/users",function(req,res){
+	var sql = 'select * from institutional_casey.users;';
+	connection.query(sql,(function(res){return function(err,rows,fields){
+		if(err){console.log(err);}
+		users = rows;
+		res.send(rows);
+	}})(res));
+});
+
 
 
 app.get("/removeItem", function(req,res){

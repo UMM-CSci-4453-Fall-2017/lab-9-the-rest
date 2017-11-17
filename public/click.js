@@ -5,22 +5,44 @@ angular.module('buttons',[])
 
 function ButtonCtrl($scope,buttonApi){
 	$scope.buttons=[]; //Initially all was still
+	$scope.users = [];
+	$scope.loggedin = false;
 	$scope.errorMessage='';
 	$scope.isLoading=isLoading;
 	$scope.refreshButtons=refreshButtons;
 	$scope.buttonClick=buttonClick;
 	$scope.removeItem = removeItem;
 	$scope.currenT=[];
+	$scope.checkUser = checkUser;
 	$scope.total= 0;
 	$scope.prices=[];
 	$scope.total = 0;
+	$scope.timeStamps = [];
 	var loading = false;
 
 	function isLoading(){
 		return loading;
 	}
+	function checkUser(name, password){
+		for (i=0;i < $scope.users.length;i++){
+			if($scope.users[i].name == name && $scope.users[i].password == password){
+				console.log(i);
+				$scope.loggedin = true;
+				console.log("hi");
+break;
+			}
+			else{
+				console.log(i);
+				console.log($scope.users[i].name);
+				console.log(name);
+				console.log(password);
+				$scope.loggedin = false;
+			}
+		}
+	}
+
 	function sum(a){
-	//	var i = 0;
+		//	var i = 0;
 		$scope.total=0;
 		console.log($scope.currenT);
 		for(i = 0; i < a.length; i++){
@@ -48,8 +70,8 @@ function ButtonCtrl($scope,buttonApi){
 		$scope.errorMessage = '';
 		console.log($event.target.id);
 		buttonApi.removeItem($event.target.id)
-		.success(function(){refreshTrans()})
-		.error(function(){$scope.errorMessage="Unable remove";});
+			.success(function(){refreshTrans()})
+			.error(function(){$scope.errorMessage="Unable remove";});
 	}
 
 	function refreshButtons(){
@@ -73,16 +95,32 @@ function ButtonCtrl($scope,buttonApi){
 				$scope.errorMessage="Unable to load Prices: Database request failed";
 			});
 	}
+	function refreshUsers(){
+		loading=true;
+		$scope.errorMessage='';
+		buttonApi.getUsers()
+			.success(function(data){
+				console.log(data);
+				$scope.users = data;
+				loading =false;
+			})
+			.error(function (){
+				$scope.errorMessage="Unable to load Users";
+			});
+	}
 
 	function buttonClick($event){
 		$scope.errorMessage='';
 		buttonApi.clickButton($event.target.id)
-			.success(function(){refreshTrans()})
+			.success(function(){ 
+				refreshTrans()
+			})
 			.error(function(){$scope.errorMessage="Unable click";});
 
 	}
 	refreshTrans();
 	refreshButtons();
+	refreshUsers();
 }
 
 function buttonApi($http,apiUrl){
@@ -110,6 +148,10 @@ function buttonApi($http,apiUrl){
 		},
 		getTrans: function(){
 			var url = apiUrl + '/trans';
+			return $http.get(url);
+		},
+		getUsers: function(){
+			var url = apiUrl + '/users';
 			return $http.get(url);
 		}
 	}

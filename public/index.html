@@ -17,8 +17,19 @@
 
 	</style>
 
-	<body ng-app="buttons" ng-controller="buttonCtrl"> 
-		<div class="container-fluid">
+	<body ng-app="buttons" ng-controller="buttonCtrl">
+
+
+<form ng-show="!loggedin">
+  Username:<br>
+  <input ng-model="username"type="text" name="username" value="Mickey"><br>
+  Password:<br>
+  <input ng-model="password"type="text" name="password" value="Mouse"><br><br>
+  <input ng-click="checkUser(username,password)"type="submit" value="Submit">
+  <input type="reset">
+</form>
+
+		<div ng-show="loggedin" class="container-fluid">
 			<h1>Cash Register (with buttons)</h1>
 			<div id="buttons" >
 				<div ng-repeat="button in buttons">
