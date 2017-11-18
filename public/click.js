@@ -19,6 +19,7 @@ function ButtonCtrl($scope,buttonApi){
 	$scope.total = 0;
 	$scope.timeStamps = [];
 	var loading = false;
+	$scope.voidSales = voidSales;
 
 	function isLoading(){
 		return loading;
@@ -118,6 +119,15 @@ break;
 			.error(function(){$scope.errorMessage="Unable click";});
 
 	}
+	function voidSales($event){
+		$scope.errorMessage='';
+		buttonApi.void($event)
+		.success(function(){
+			refreshTrans()
+		})
+		.error(function(){$scope.errorMessage="Unable to void";});
+	}
+
 	refreshTrans();
 	refreshButtons();
 	refreshUsers();
@@ -152,6 +162,10 @@ function buttonApi($http,apiUrl){
 		},
 		getUsers: function(){
 			var url = apiUrl + '/users';
+			return $http.get(url);
+		},
+		void: function(){
+			var url = apiUrl + '/void';
 			return $http.get(url);
 		}
 	}

@@ -97,5 +97,15 @@ app.get("/removeItem", function(req,res){
 			res.send(rows);
 		}})(res));
 });
+app.get("/void", function (req,res){
+	var sql = "truncate institutional_casey.current_transaction";
+	connection.query(sql,(function(res){
+		return function(err,rows,fields){
+		if(err){
+			console.log(err);
+		}
+		res.send(rows);
+		}})(res));
+});
 
 app.listen(port);
