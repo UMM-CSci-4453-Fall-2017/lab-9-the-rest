@@ -76,17 +76,9 @@ app.get("/users",function(req,res){
 });
 
 
-
 app.get("/removeItem", function(req,res){
 	var id = req.param('id');
-	if(current_transactions[id-1].Amount == 1){
-		var sql = 'DELETE FROM institutional_casey.current_transaction where buttonID = ' + id;
-		console.log("Attempting sql ->" + sql + "<-");
-	} 
-	else{
-		var sql = 'update institutional_casey.current_transaction set Amount = Amount-1 where buttonID ='+ id+ ';'
-	}
-	console.log("Attempting sql ->" + sql + "<-");
+	var sql = 'call institutional_casey.decrement_or_delete('+id+');';
 
 	connection.query(sql,(function(res){
 		return function(err,rows,fields){
@@ -97,6 +89,7 @@ app.get("/removeItem", function(req,res){
 			res.send(rows);
 		}})(res));
 });
+
 app.get("/void", function (req,res){
 	var sql = "truncate institutional_casey.current_transaction";
 	connection.query(sql,(function(res){
@@ -107,5 +100,6 @@ app.get("/void", function (req,res){
 		res.send(rows);
 		}})(res));
 });
+
 
 app.listen(port);
