@@ -101,5 +101,20 @@ app.get("/void", function (req,res){
 		}})(res));
 });
 
+app.get("/sale",function (req,res){
+	var id = req.param('user_id');
+	var tranID = 1;
+	console.log(id);
+	var sql = 'call institutional_casey.archive(' + id + ',' + tranID + ');';
+	connection.query(sql,(function(res){
+		return function(err,rows,fields){
+			if(err){
+				console.log(err);
+				tranID = tranID + 1;
+			}
+			res.send(rows);
+		}})(res));
+});
+
 
 app.listen(port);

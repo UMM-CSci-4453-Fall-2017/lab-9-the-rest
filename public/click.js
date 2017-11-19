@@ -20,6 +20,8 @@ function ButtonCtrl($scope,buttonApi){
 	$scope.timeStamps = [];
 	var loading = false;
 	$scope.voidSales = voidSales;
+	$scope.user = null;
+	$scope.sale = sale;
 
 	function isLoading(){
 		return loading;
@@ -30,6 +32,7 @@ function ButtonCtrl($scope,buttonApi){
 				console.log(i);
 				$scope.loggedin = true;
 				console.log("hi");
+				$scope.user = $scope.users[i];
 break;
 			}
 			else{
@@ -51,6 +54,18 @@ break;
 			$scope.total = ($scope.total + (a[i].price * a[i].Amount));
 			console.log($scope.total);
 		}
+	}
+	function sale(user_id){
+		console.log(user_id);
+		loading = true;
+		$scope.errorMessage = '';
+		buttonApi.makeSale(user_id)
+		.success(function(data){
+			loading = false;
+		})
+		.error(function(){
+			$scope.errorMessage = 'Unable to make sale';
+		});
 	}
 
 	function refreshTrans(){
@@ -166,6 +181,10 @@ function buttonApi($http,apiUrl){
 		},
 		void: function(){
 			var url = apiUrl + '/void';
+			return $http.get(url);
+		},
+		makeSale: function(user_id){
+			var url = apiUrl + '/sale?user_id=' + user_id;
 			return $http.get(url);
 		}
 	}
