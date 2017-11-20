@@ -63,6 +63,7 @@ break;
 		buttonApi.makeSale(user_id)
 		.success(function(data){
 			loading = false;
+			refreshTrans();
 		})
 		.error(function(){
 			$scope.errorMessage = 'Unable to make sale';
