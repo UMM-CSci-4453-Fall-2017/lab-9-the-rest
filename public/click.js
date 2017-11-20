@@ -22,6 +22,7 @@ function ButtonCtrl($scope,buttonApi){
 	$scope.voidSales = voidSales;
 	$scope.user = null;
 	$scope.sale = sale;
+	$scope.logout = logout;
 
 	function isLoading(){
 		return loading;
@@ -133,6 +134,10 @@ break;
 			})
 			.error(function(){$scope.errorMessage="Unable click";});
 
+	}
+	function logout(){
+		$scope.loggedin = false;
+		$scope.user = null;
 	}
 	function voidSales($event){
 		$scope.errorMessage='';

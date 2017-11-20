@@ -36,6 +36,8 @@
 					<div style="position:absolute;left:{{button.left}}px;top:{{button.top}}px"><button id="{{button.buttonID}}" ng-click="buttonClick($event,'button.buttonID','button.label',prices[buttonID].price);" >{{button.label}}</button></div>
 				</div>
 			</div>
+
+			<button style="float:right" ng-click="logout()"> logout </button>
 			<div style="float:right" id="priceList" class="priceList">
 				<TABLE id="table1" class="itemTable">
 					<tr ng-repeat="item in currenT" ng-click="removeItem($event, 'item.buttonID')" id="{{item.buttonID}}">
