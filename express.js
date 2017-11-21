@@ -113,6 +113,17 @@ app.get("/sale",function (req,res){
 			res.send(rows);
 		}})(res));
 });
+app.get("/ticketize",function (req,res){
+	var sql = 'select * from institutional_casey.current_transaction;';
+	connection.query(sql,(function(res){
+		return function(err,rows,fields){
+			if(err){
+				console.log(err);
+			}
+			res.send(rows);
+		}})(res));
+});
+
 
 
 app.listen(port);

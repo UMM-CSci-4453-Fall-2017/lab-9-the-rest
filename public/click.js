@@ -23,6 +23,7 @@ function ButtonCtrl($scope,buttonApi){
 	$scope.user = null;
 	$scope.sale = sale;
 	$scope.logout = logout;
+	$scope.ticket=null;
 
 	function isLoading(){
 		return loading;
@@ -34,7 +35,7 @@ function ButtonCtrl($scope,buttonApi){
 				$scope.loggedin = true;
 				console.log("hi");
 				$scope.user = $scope.users[i];
-break;
+				break;
 			}
 			else{
 				console.log(i);
@@ -60,14 +61,22 @@ break;
 		console.log(user_id);
 		loading = true;
 		$scope.errorMessage = '';
-		buttonApi.makeSale(user_id)
-		.success(function(data){
-			loading = false;
-			refreshTrans();
-		})
-		.error(function(){
-			$scope.errorMessage = 'Unable to make sale';
-		});
+		buttonApi.ticketize()
+			.success(function(data){
+				loading = false;
+				$scope.ticket = data;
+				buttonApi.makeSale(user_id)
+					.success(function(data){
+						loading = false;
+						refreshTrans();
+					})
+					.error(function(){
+						$scope.errorMessage = 'Unable to make sale';
+					});
+			})
+			.error(function(){
+				$scope.errorMessage = 'Unable to make ticket';
+			});
 	}
 
 	function refreshTrans(){
@@ -143,10 +152,10 @@ break;
 	function voidSales($event){
 		$scope.errorMessage='';
 		buttonApi.void($event)
-		.success(function(){
-			refreshTrans()
-		})
-		.error(function(){$scope.errorMessage="Unable to void";});
+			.success(function(){
+				refreshTrans()
+			})
+			.error(function(){$scope.errorMessage="Unable to void";});
 	}
 
 	refreshTrans();
@@ -192,7 +201,10 @@ function buttonApi($http,apiUrl){
 		makeSale: function(user_id){
 			var url = apiUrl + '/sale?user_id=' + user_id;
 			return $http.get(url);
+		},
+		ticketize: function(){
+			var url = apiUrl + '/ticketize';
+			return $http.get(url);
 		}
 	}
 }
-
