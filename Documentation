@@ -1,0 +1,21 @@
+Group Members:
+Adam Casey
+Jacob Sphatt
+
+Database:
+institutional_casey
+
+
+Information on API:
+
+Uses button api for calls to remove transactions, add tansactions,
+update prices, get buttons, etc. (Basically everything)
+All API calls are in click.js
+Supported API calls:
+
+/buttons: Gets buttons from till_buttons table
+/click: updates the current_transaction table to reflect the item clicked to be added
+/removeItem: updates the current_transaction table to reflect the item clicked to be removed
+/total: Gets the total cost of all items in current_transaction
+/prices: Gets the prices of the items in the current_transaction table
+/trans: Gets the current_transaction table
