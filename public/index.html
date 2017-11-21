@@ -24,7 +24,7 @@
   Username:<br>
   <input ng-model="username"type="text" name="username" value="Mickey"><br>
   Password:<br>
-  <input ng-model="password"type="text" name="password" value="Mouse"><br><br>
+  <input ng-model="password"type="password" name="password" value="Mouse"><br><br>
   <input ng-click="checkUser(username,password)"type="submit" value="Submit">
   <input type="reset">
 </form>
@@ -49,6 +49,7 @@
 				</TABLE>
 				<button ng-click="voidSales($event)">void sales</button>
 				<button ng-click="sale(user.user_id)">Sale</button>
+				<button ng-click="getReceipt()"> View Receipt </button>
 			</div>
 		</div>
 	</body>

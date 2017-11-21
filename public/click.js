@@ -3,7 +3,7 @@ angular.module('buttons',[])
 	.factory('buttonApi',buttonApi)
 	.constant('apiUrl','http://localhost:1337'); // CHANGED for the lab 2017!
 
-function ButtonCtrl($scope,buttonApi){
+function ButtonCtrl($scope,buttonApi,$window){
 	$scope.buttons=[]; //Initially all was still
 	$scope.users = [];
 	$scope.loggedin = false;
@@ -24,6 +24,7 @@ function ButtonCtrl($scope,buttonApi){
 	$scope.sale = sale;
 	$scope.logout = logout;
 	$scope.ticket=null;
+	$scope.getReceipt = getReceipt;
 
 	function isLoading(){
 		return loading;
@@ -121,6 +122,33 @@ function ButtonCtrl($scope,buttonApi){
 			.error(function (){
 				$scope.errorMessage="Unable to load Prices: Database request failed";
 			});
+	}
+	function ticketTotal (){
+		var total = 0;
+		for (i=0;i<$scope.ticket.length;i++){
+			total = total + $scope.ticket[i].price * $scope.ticket[i].Amount;
+		}
+		return total;
+	}
+	function stringTicket(){
+		var receipt = '';
+		var n = $scope.ticket.length;
+		for (var i=0;i<n;i++){
+			receipt = receipt +'\n '+ $scope.ticket[i].label;
+			receipt = receipt +'\n Price ' + $scope.ticket[i].price;
+			receipt = receipt +'\n Amount ' + $scope.ticket[i].Amount;
+			
+		}
+
+			receipt = receipt + '\n Total:' + ticketTotal();
+		return receipt;
+	}
+	function getReceipt(){
+		if($scope.ticket == null){
+			$window.alert("Please make a sale before viewing a receipt");
+		}	else{
+			$window.alert(stringTicket());
+		}
 	}
 	function refreshUsers(){
 		loading=true;
