@@ -5,8 +5,20 @@ Jacob Sphatt
 Database:
 institutional_casey
 
+User Manual:
+First the user is prompted with a login page where a username and password that is stored in institutional_casey.users must be entered to login.
+If the username and password that is entered does not match any in the table a login does not occur.
+After the user is logged in the have access to the items avilible to be sold as a series of buttons on the left side of the screen.
+The user can add buttons to the current transaction simply by clicking them.
+Items that are added to the current transaction in this manner appear in the table at the right side of the screen. 
+If a user has added an item to the transaction that they would like to remove they can click on it's entry in the table to remove one copy of that item.
+If the user wishes to remove all items from the transaction they click on the void button, this will remove all items from the transaction.
+If the user has added the correct items and would like to complete a sale they can click on the sale button.
+All sales are recored in the database.
+After the user has made a sale they can view a receipt for that sale by clicking the view receipt button.
+After the user is finished they can logout by clicking the logout button.
 
-Information on API:
+API Appendix:
 
 Uses button api for calls to remove transactions, add tansactions,
 update prices, get buttons, etc. (Basically everything)
